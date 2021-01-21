@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="ROBOTS" content="NOINDEX">
+		<title>PushPush.html &nbsp; by: Sam Benedict</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/0.8.1/localforage.min.js"></script>
+		<script language="javascript" src="levels.js"></script>
+		<script language="javascript" src="gameengine.js"></script>
+		<script language="javascript" src="ui.js"></script>
+		<link rel="stylesheet" href="master.css" type="text/css" />
+        <style id="styleDynamic">
+.clsGameBoard img 
+{
+	width: 30px;
+	height: 30px;
+}
+        </style>
+	</head>
+    <body>
+        <div class="clsBody">
+            <div class="clsTitle">
+                <div class="clsTitleTextShadow">
+                    <div class="clsTitleTextSmall"><b>P</b>USH&nbsp;<b>P</b>USH</div>
+                </div>
+                <div class="clsTitleTextHilite">
+                    <div class="clsTitleTextSmall"><b>P</b>USH&nbsp;<b>P</b>USH</div>
+                </div>
+                <div class="clsTitleText">
+                    <div class="clsTitleTextSmall"><b>P</b><i>U</i>S<i>H</i>&nbsp;<b><i>P</i></b>U<i>S</i>H</div>
+                </div>
+            </div><br />
+            <div class="clsMenu">
+                <div>
+                    <a href="#" onclick="menuUndoBtn(); return false;"><u>U</u>ndo</a>
+                    <a href="#" onclick="menuResetBtn(); return false;"><u>R</u>eset</a>
+                </div>
+                <div>
+                    <a href="#" onclick="menuSelectLevelBtn(); return false;">Select <u>L</u>evel</a>
+                    <a href="#" onclick="menuBestsBtn(); return false;"><u>B</u>ests</a>
+                    <a href="#" onclick="menuOptionsBtn(); return false;"><u>O</u>ptions</a>
+                </div>
+                <div>
+                    <a href="#" onclick="menuHelpBtn(); return false;"><u>H</u>elp</a>
+                    <a href="#" onclick="menuAboutBtn(); return false;"><u>A</u>bout</a>
+                </div>
+            </div><br />
+            <div class="clsBoard">
+                <div id="divBoardContainer">
+                    <div id="divLoadingMsg">L O A D I N G . . .</div>
+                </div>
+            </div><br />
+            <div id="divStatus" class="clsStatus" style="display: none;">
+                <table id="tblMainBottom" class="clsStatusBar" width="100%" border="0" cellpadding="0" cellspacing="2">
+                    <tr>
+                        <td width="1"></td>
+                        <td width="8" nowrap><span id="spanStatusLevel">Level X</span></td>
+                        <td width="1"></td>
+                        <td width="8" nowrap id="tdStatusBest">Best: <span id="spanStatusBestMoves">Level X</span>
+                            in <span id="spanStatusBestTime">Level X</span></td>
+                        <td width="1" id="tdStatusBest2"></td>
+                        <td width="8" nowrap>Moves: <span id="spanStatusMoveCount" xstyle="position: absolute;">
+                                0</span><!--span style="visibility:hidden;">0000</span--></td>
+                        <td width="1"></td>
+                        <td width="8" nowrap>Time: <span id="spanStatusTime" xstyle="position: absolute;">0:00</span><!--span style="visibility:hidden;">00:00:00</span--></td>
+                        <td width="1"></td>
+                    </tr>
+                </table>
+            </div><br />
+		</div>
+        <div id="divDialogCover" class="clsDialogCover" style="display: none;"></div>
+        <div id="divDialogFrame" class="clsDialogFrame" style="display: none;">
+            <div class="clsDialogTitle">
+                <span id="spanDialogTitleText"></span>
+                <button onclick="dialogBoxCloseBtn()">X</button>
+            </div>
+            <div id="divDialogBody" class="clsDialogBody"></div>
+        </div>
+        <div id="dialogContents" style="display: none;">
+            <div id="divLevelSelectDialog">
+                <div>Select a level to play...</div>
+                <div>
+                    <table width="100%" cellpadding="0" cellspacing="8">
+                        <tr>
+                            <td align="left" style="font-size: smaller;">Level:<br>
+                                <select id="selLevels" size="10">
+                                </select>
+                            </td>
+                            <td id="tdLevelSelectPreview" width="100%" align="center">
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="text-align:center; padding: 0px 8px 8px; font-size: smaller;">
+                        <i>There are a total of 50 levels!!<br>
+                        Solving a level opens up the next one!!</i>
+                    </div>
+                    <div class="clsDialogBodyButtons">
+                        <button onclick="dialogLevelSelectPlayBtn()">Play</button>
+                        <button onclick="dialogBoxHide()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div id="divBestsDialog">
+                <div>Your best performances</div>
+                <div>
+                    <table width="100%" cellpadding="0" cellspacing="8" style="font-size: smaller;">
+                        <tr><td><div style="position: relative; height: 230px; overflow-y: scroll;"
+                            onscroll="trBestsHeaders.style.top = this.scrollTop;">
+                            <table id="tblBests" width="100%" border=2 cellpadding="0" cellspacing="0" style="font-size: smaller; border: 0px solid #00000;">
+                                <tr id="trBestsHeaders" style="background: #EEEEEE; position: relative; left: 0px;">
+                                    <th style="border-style: outset;">Level</th>
+                                    <th style="border-style: outset;">Moves</th>
+                                    <th style="border-style: outset;">Time</th>
+                                </tr>
+                            </table>
+                        </div></td></tr>
+                    </table>
+                    <div class="clsDialogBodyButtons">
+                        <button onclick="dialogBoxHide()">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div id="divOptionsDialog">
+                <div>Change the options...</div>
+                <div>
+                    <div>
+                        Size:&nbsp;<select id="selOptionsSize" size="1">
+                            <option value="1">Smallest</option>
+                            <option value="2">Smaller</option>
+                            <option value="3" selected>Normal</option>
+                            <option value="4">Larger</option>
+                            <option value="6">Largest</option>
+                        </select>
+                    </div>
+                    <div>
+                        Theme:&nbsp;<select id="selOptionsTheme" size="1" onchange="selOptionsThemeOnChange();">
+                            <option value="PushPush.dhtml" selected>PushPush.dhtml</option>
+                            <option value="SCH-T300">Samsung SCH-T300</option>
+                            <option value="how.to.pushpush">http://how.to/PushPush</option>
+                            <!--option value="www.cs.ualberta.ca">http://www.cs.ualberta.ca/~games/Sokoban/</option-->
+                            <!--option value="pimpernel">http://www.pipernel.com/sokoban/sokoban.html</option-->
+                        </select>
+                    </div>
+                    <div style="text-align: center;">
+                        <a id="aOptionsThemeInfo" href="" target="_blank"></a>
+                    </div>
+                    <div class="clsDialogBodyButtons">
+                        <button onclick="dialogOptionsApplyBtn()">OK</button>
+                        <button onclick="dialogBoxHide()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div id="divHelpDialog">
+                <div>How the heck do you play PushPush.dhtml??</div>
+                <div>
+                    <div class="clsHelpDialogText">
+                        You move the <img src="images/PushPush.dhtml/Cursor.gif" width="20" height="20">
+                        cursor around with the arrow keys on your keyboard. The cursor will push the <img src="images/PushPush.dhtml/Rock.gif" width="20" height="20">
+                        balls around when it bumps into them. Try to get all the balls onto the <img src="images/PushPush.dhtml/Goal.gif" width="20" height="20">
+                        goals without getting trapped!<br>
+                        <br>
+                        <i>If you are truly stuck, you can find solutions <a href="https://web.archive.org/web/20091027095235/http://geocities.com/namster2k/pushpush/index.html" target="_blank">here</a> or maybe <a href="https://www.oocities.org/namster2k/pushpush/index.html" target="_blank">here</a>.</i><br>
+                        <br>
+                        If you lose your saved progress, you can click <a href="javascript:GetLevelsBack();">here</a> to get back to the last level you were on.<br>
+                        <b>(But remember, cheaters never win!)</b>
+                    </div>
+                    <div class="clsDialogBodyButtons">
+                        <button onclick="dialogBoxHide()">Let me try it!!</button>
+                    </div>
+                </div>
+            </div>
+            <div id="divAboutDialog">
+                <div>About...</div>
+                <div>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td style="vertical-align: top; font-size: 0px; width: 120px;">
+                                <img src="images/PushPush.dhtml/Wall.gif" width="30" height="30"><img src="images/PushPush.dhtml/Wall.gif" width="30" height="30"><img src="images/PushPush.dhtml/Wall.gif" width="30" height="30"><img src="images/PushPush.dhtml/Wall.gif" width="30" height="30">
+                                <br />
+                                <img src="images/PushPush.dhtml/Wall.gif" width="30" height="30">
+                                <img src="images/PushPush.dhtml/Cursor.gif" width="30" height="30" style="position: absolute;"><img src="images/PushPush.dhtml/Floor.gif" width="30" height="30"><img src="images/PushPush.dhtml/Goal.gif" width="30" height="30">
+                                <img src="images/PushPush.dhtml/Wall.gif" width="30" height="30">
+                                <br />
+                                <img src="images/PushPush.dhtml/Wall.gif" width="30" height="30">
+                                <img src="images/PushPush.dhtml/Rock.gif" width="30" height="30" style="position: absolute;"><img src="images/PushPush.dhtml/Floor.gif" width="30" height="30"><img src="images/PushPush.dhtml/GoalOccupied.gif" width="30" height="30">
+                                <img src="images/PushPush.dhtml/Wall.gif" width="30" height="30">
+                                <br />
+                                <img src="images/PushPush.dhtml/Wall.gif" width="30" height="30"><img src="images/PushPush.dhtml/Wall.gif" width="30" height="30"><img src="images/PushPush.dhtml/Wall.gif" width="30" height="30"><img src="images/PushPush.dhtml/Wall.gif" width="30" height="30">
+                            </td>
+                            <td style="text-align: left; padding: 0px 10px; font-size: smaller;">
+                                &copy;2002-2021 Sam Benedict<br />
+                                <br />
+                                Original concept and level designs found on the Samsung SCH-T300 mobile phone copyrighted by <a href="http://www.samsungmobile.com/" target="_blank"> Samsung, Inc.</a><br />
+                                <br />
+                                Theme graphics are copyrighted by individual or organization as noted on the Options screen.<br />
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="clsDialogBodyButtons">
+                        <button onclick="dialogBoxHide()">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div id="divCongratsDialog">
+                <div>Congratulations!!!</div>
+                <div><form name="formCongrats" onsubmit="return false;">
+                        <table width="100%" cellpadding="0" cellspacing="8">
+                            <tr>
+                                <td></td>
+                                <td align="left">Great Job!!<br>
+                                    It took you <span id="spanCongratsMoveCount">0</span> moves and <span id="spanCongratsTime">
+                                        0:00</span> to figure out that puzzle.<br>
+                                    <span id="spanCongratsExtraMsg"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div align="right" style="padding: 0px 8px;">
+                            <input type="submit" onclick="dialogBoxHide(); menuResetBtn()" value="&nbsp;Continue&nbsp;">
+                        </div>
+                    </form>
+                    </form></div>
+            </div>
+        </div>
+	</body>
+	<script language="javascript">
+        Init();
+	</script>
+</html>

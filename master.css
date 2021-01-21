@@ -1,0 +1,231 @@
+body
+{
+    position: relative;
+	margin: 10px;
+	font-family: Tahoma, Arial, Sans-Serif;
+	text-align: center;
+}
+table
+{
+	font-family: Tahoma, Arial, Sans-Serif;
+	text-align: center;
+    border-spacing: 0px;
+}
+
+.clsBody
+{
+    display: inline-block;
+    box-sizing: fit-content;
+}
+.clsBoard
+{
+    display: inline-block;
+    margin: 10px 0px;
+    font-size: 0px;
+}
+
+
+.clsTitle
+{
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+    width: fit-content;
+    margin: 10px;
+}
+.clsTitleText, .clsTitleTextHilite, .clsTitleTextShadow
+{
+    box-sizing: border-box;
+	font-weight: bold;
+	font-family: 'Comic Sans MS' , 'Courier New' , Monospace;
+	font-size: 16px;
+	letter-spacing: -6px;
+	padding: 0px 32px;
+}
+.clsTitleText
+{
+	z-index: 3;
+	left: 0px;
+	width: 100%;
+	position: relative;
+	top: 0px;
+	border: 4px solid #ff0000;
+	border-color: #ffa500 #ff0000 #ff0000 #ffa500;
+}
+.clsTitleTextHilite
+{
+	color: #ffff00;
+	z-index: 2;
+	left: -3px;
+	width: 100%;
+	position: absolute;
+	top: -2px;
+	border: 4px solid #ffff00;
+}
+.clsTitleTextShadow
+{
+	color: #dddddd;
+	z-index: 1;
+	left: 3px;
+	width: 100%;
+	position: absolute;
+	top: 4px;
+	border: 4px solid #dddddd;
+}
+.clsTitleText
+{
+	color: #ff0000;
+}
+.clsTitleText i
+{
+    font-style: normal;
+	color: #ffa500;
+}
+.clsTitleTextSmall
+{
+    font-size: 48px;
+}
+.clsTitleTextSmall b
+{
+    font-size: 64px;
+}
+
+.clsMenu
+{
+    display: inline-block;
+    font-size: 0px;
+    margin: 10px 0px;
+}
+.clsMenu > div
+{
+    display: inline-block;
+	background: #ececef;
+	border: 1px outset #ffffff;
+}
+.clsMenu > div > a
+{
+    display: inline-block;
+    margin: 2px;
+    padding: 2px;
+ 	background: #ececef;
+	border: 1px outset #ffffff;
+    min-width: 100px;
+    text-decoration: none;
+    color: #008000;
+    font-size: 14px;
+}
+.clsMenu > div > a:hover
+{
+	border: 2px groove #ffffff;
+	padding: 1px;
+}
+.clsMenu > div > a:active
+{
+	border: 2px inset #ffffff;
+	padding: 1px 0px 0px 2px;
+	background: #efeff2;
+	color: #006000;
+}
+
+.clsStatusBar 
+{
+	font-size: smaller;
+	border: 1px outset #ffffff;
+	background: #ececef;
+}
+.clsStatusBar td 
+{
+	padding: 1px 4px;
+	border: 1px inset #ffffff;
+	color: #0000ff;
+}
+
+.clsGameBoard 
+{
+	border-top: 4px solid #ffa500;
+	border-left: 4px solid #ffa500;
+	border-bottom: 4px solid #ff0000;
+	border-right: 4px solid #ff0000;
+	background: #ececef;
+}
+.clsGameBoard img 
+{
+	width: 30px;
+	height: 30px;
+    image-rendering: pixelated;
+}
+#tdLevelSelectPreview table
+{
+	border-top: 2px solid #ffa500;
+	border-left: 2px solid #ffa500;
+	border-bottom: 2px solid #ff0000;
+	border-right: 2px solid #ff0000;
+	background: #ececef;
+    font-size: 0px;
+}
+.clsGameBoardPreview img
+{
+	width: 10px;
+	height: 10px;
+}
+
+
+.clsDialogCover
+{
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    filter: opacity(0.75);
+    background-color: #ffffff;
+}
+.clsDialogFrame
+{
+    position: fixed;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    margin-top: 0px;
+    margin-left: -200px;
+    width: 400px;
+    background-color: #dddddd;
+    border: 2px outset #ffffff;
+}
+.clsDialogTitle
+{
+    overflow: auto;
+    background-image: linear-gradient(to right, #ffa500, #ff0000);
+    xheight: 1.2em;
+    padding: 1px 4px;
+    text-align: left;
+}
+.clsDialogTitle button
+{
+    float: right;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 0px 10px;
+}
+.clsDialogBody {
+    padding: 10px;
+}
+.clsDialogBody > div > div
+{
+    padding: 5px;
+    font-size: smaller;
+    text-align: left;
+}
+.clsDialogBody > div > div.clsDialogBodyButtons
+{
+    text-align: right;
+}
+.clsDialogBody > div > div.clsDialogBodyButtons button
+{
+    padding: 0px 10px;
+}
+.clsHelpDialogText img
+{
+	vertical-align: middle;
+}
